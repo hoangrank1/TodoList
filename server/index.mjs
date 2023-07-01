@@ -10,20 +10,51 @@ import dotenv from 'dotenv';
 //import { typeDefs } from './schemas/index.js';
 //import { resolvers } from './resolvers/index.js';
 //import './firebaseConfig.js';
+import fakeData from './fakeData/index.js'; 
 
 dotenv.config();
 const app = express();
 const httpServer = http.createServer(app);
 
-const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.invorp6.mongodb.net/?retryWrites=true&w=majority`;
+const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.invorp6.mongodb.net/ToDoList?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 4000;
 
-const typeDefs = "";
-const resolvers = "";
+const typeDefs = `#graphql
+  type Folder {
+    id: String,
+    name: String,
+    createdAt: String,
+    author: Author
+  }
+
+  type Author {
+    id: String,
+    name: String,
+  }
+  
+  type Query {
+    folders: [Folder]
+  }
+`;
+
+const resolvers = {
+  Query: {
+    folders: () => { 
+      return fakeData.folders; 
+    }
+  },
+  Folder: {
+    author: (parent, args) => {
+      console.log({parent, args});
+      const authorId = parent.authorId;
+      return fakeData.authors.find(author => author.id === authorId);
+    }
+  }
+};
 
 const server = new ApolloServer({
-  //typeDefs,
-  //resolvers,
+  typeDefs,
+  resolvers,
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer })
   ],
@@ -47,3 +78,5 @@ mongoose.connect(URI, {
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(`Server ready at http://localhost:${PORT}`);
 });
+
+ 
