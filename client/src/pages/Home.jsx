@@ -5,6 +5,8 @@ import {
 } from '@mui/material'
 import React from 'react'
 import UserMenu from '../components/UserMenu';
+import FolderList from '../components/FolderList';
+import { Outlet } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -18,19 +20,28 @@ export default function Home() {
       </Box>
 
       <Grid container sx={{
-          height: '50vh',
-          boxShadow: '0 0 15px 0 rgb(193 193 193 / 60%)',
-        }}>
+        height: '50vh',
+        boxShadow: '0 0 15px 0 rgb(193 193 193 / 60%)',
+      }}>
         <Grid item xs={3} sx={{
           height: '100%',
         }}>  
-          <p> Folder List </p>
+          <FolderList folders={[ 
+            {
+              id: "1",
+              name: "Plan for Tet Holiday",
+            },
+            {
+              id: "2",
+              name: "Cooking",
+            },
+          ]} />
         </Grid>
 
         <Grid item xs={9} sx={{
           height: '100%'
         }}>
-          <p> Note List </p>
+          <Outlet />
         </Grid>
       </Grid>
     </>
