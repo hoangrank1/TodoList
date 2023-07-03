@@ -1,3 +1,5 @@
+import { graphQLRequest } from "./request";
+
 export const notesLoader = async ({ params: { folderId } }) => {
   const query = `query Folder($folderId: String) {
     folder(folderId: $folderId) {
@@ -10,23 +12,14 @@ export const notesLoader = async ({ params: { folderId } }) => {
     }
   }`;
 
-  const res = await fetch('http://localhost:3001/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables: {
-        folderId: folderId
-      }
-    })
+  const data = await graphQLRequest({ 
+    query, 
+    variables: {
+      folderId: folderId
+    }
   });
-
-  const { data } = await res.json();
-  console.log('From [client/router/index/NoteList]', data);
-  return data;
+  console.log('From [client/utils/notesLoader]', data);
+  return data; 
 }
 
 export const noteLoader = async ({ params: { noteId } }) => {
@@ -37,21 +30,12 @@ export const noteLoader = async ({ params: { noteId } }) => {
     }
   }`;
 
-  const res = await fetch('http://localhost:3001/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables: {
-        noteId: noteId
-      }
-    })
+  const data = await graphQLRequest({ 
+    query, 
+    variables: {
+      noteId: noteId
+    }
   });
-
-  const { data } = await res.json();
-  console.log('From [client/router/index/NoteList]', data);
+  console.log('From [client/utils/noteLoader]', data);
   return data;
 }

@@ -5,8 +5,11 @@ import {
 
 export const resolvers = {
   Query: {
-    folders: async () => { 
-      const folders = await FolderModel.find();
+    folders: async (parent, args, context) => { 
+      const folders = await FolderModel.find({
+        authorId: context.uid
+      });
+      console.log('From [server/resolvers/index/query-folders]', { folders, context });
       return folders;
     },
     folder: async(parent, args) => { // args: data that request from client
