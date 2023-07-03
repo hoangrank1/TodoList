@@ -7,8 +7,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-//import { typeDefs } from './schemas/index.js';
-//import { resolvers } from './resolvers/index.js';
+import { typeDefs } from './schemas/index.js';
+import { resolvers } from './resolvers/index.js';
 //import './firebaseConfig.js';
 import fakeData from './fakeData/index.js'; 
 
@@ -18,59 +18,6 @@ const httpServer = http.createServer(app);
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.invorp6.mongodb.net/ToDoList?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 4000;
-
-const typeDefs = `#graphql
-  type Folder {
-    id: String,
-    name: String,
-    createdAt: String,
-    author: Author,
-    notes: [Note]
-  }
-
-  type Note {
-    id: String,
-    content: String,
-  }
-
-  type Author {
-    id: String,
-    name: String,
-  }
-  
-  type Query {
-    folders: [Folder],
-    folder(folderId: String): Folder,
-    note(noteId: String): Note
-  }
-`;
-
-const resolvers = {
-  Query: {
-    folders: () => { 
-      return fakeData.folders; 
-    },
-    folder: (parent, args) => { // args: data that request from client
-      const folderId = args.folderId;
-      return fakeData.folders.find(folder => folder.id === folderId); 
-    },
-    note: (parent, args) => {
-      const noteId = args.noteId;
-      return fakeData.notes.find(note => note.id === noteId); 
-    },
-  },
-  Folder: {
-    author: (parent, args) => {
-      //console.log('From [server/index/Folder-author]', {parent, args});
-      const authorId = parent.authorId;
-      return fakeData.authors.find(author => author.id === authorId);
-    },
-    notes: (parent, args) => {
-      //console.log('From [server/index/Folder-notes]', {parent, args});
-      return fakeData.notes.filter(note => note.folderId === parent.id);
-    }
-  }
-};
 
 const server = new ApolloServer({
   typeDefs,

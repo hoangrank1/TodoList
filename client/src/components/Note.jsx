@@ -21,11 +21,6 @@ import {
 export default function Note() {
   const { note } = useLoaderData();
 
-  // const note = {
-  //   id: '9999',
-  //   content: '<p>This is new note</p>',
-  // }
-
   const [editorState, setEditorState] = useState(() => {
     return EditorState.createEmpty();
   });
