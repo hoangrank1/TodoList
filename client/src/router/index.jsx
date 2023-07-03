@@ -52,13 +52,40 @@ export default createBrowserRouter([
               });
 
               const { data } = await res.json();
-              console.log('From [client/router/index.jsx]', data);
+              console.log('From [client/router/index/FolderList]', data);
               return data;
             },
             children: [
               {
                 element: <NoteList />,
                 path: `folders/:folderId`,
+                loader: async ({ params: { folderId } }) => {
+                  const query = `query ExampleQuery($folderId: String) {
+                    folder(folderId: $folderId) {
+                      id
+                      name
+                    }
+                  }`;
+
+                  const res = await fetch('http://localhost:3001/graphql', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      query,
+                      variables: {
+                        folderId: folderId
+                      }
+                    })
+                  });
+
+                  const { data } = await res.json();
+                  console.log('From [client/router/index/NoteList]', data);
+                  return data;
+                  
+                },
                 children: [
                   {
                     element: <Note />,
