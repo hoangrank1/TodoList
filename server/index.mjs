@@ -9,8 +9,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { typeDefs } from './schemas/index.js';
 import { resolvers } from './resolvers/index.js';
-//import './firebaseConfig.js';
-import fakeData from './fakeData/index.js'; 
+import './firebaseConfig.js';
 
 dotenv.config();
 const app = express();
