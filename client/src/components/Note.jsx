@@ -14,12 +14,17 @@ import {
   draftToHtml,
   convertToRaw,
 } from 'draftjs-to-html';
+import { 
+  useLoaderData, 
+} from 'react-router-dom';
 
 export default function Note() {
-  const note = {
-    id: '9999',
-    content: '<p>This is new note</p>',
-  }
+  const { note } = useLoaderData();
+
+  // const note = {
+  //   id: '9999',
+  //   content: '<p>This is new note</p>',
+  // }
 
   const [editorState, setEditorState] = useState(() => {
     return EditorState.createEmpty();
