@@ -24,7 +24,13 @@ const typeDefs = `#graphql
     id: String,
     name: String,
     createdAt: String,
-    author: Author
+    author: Author,
+    notes: [Note]
+  }
+
+  type Note {
+    id: String,
+    content: String,
   }
 
   type Author {
@@ -50,9 +56,13 @@ const resolvers = {
   },
   Folder: {
     author: (parent, args) => {
-      console.log({parent, args});
+      console.log('From [server/index/Folder-author]', {parent, args});
       const authorId = parent.authorId;
       return fakeData.authors.find(author => author.id === authorId);
+    },
+    notes: (parent, args) => {
+      console.log('From [server/index/Folder-notes]', {parent, args});
+      return fakeData.notes.filter(note => note.folderId === parent.id);
     }
   }
 };

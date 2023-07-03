@@ -11,26 +11,17 @@ import {
   Link, 
   Outlet,
   useParams, 
+  useLoaderData,
 } from 'react-router-dom';
 
 export default function NoteList() {
-  const folder = {
-    notes: [
-      {
-        id: '1',
-        content: '<p>This is new note</p>',
-      },
-      {
-        id: '2',
-        content: '<p>Hahahaahahaha</p>',
-      }
-    ]
-  };
+  const { folder } = useLoaderData();
+  console.log('From [client/components/NoteList-folder]', folder); 
 
   const {
     noteId
   } = useParams();
-  console.log('From [client/components/NoteList]', {noteId});
+  console.log('From [client/components/NoteList-noteId]', {noteId});
   const [activeNoteId, setActiveNoteId] = useState(noteId);
 
   return (
