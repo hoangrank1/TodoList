@@ -6,9 +6,14 @@ import {
 import React from 'react'
 import UserMenu from '../components/UserMenu';
 import FolderList from '../components/FolderList';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 
 export default function Home() {
+  const {
+    folders 
+  } = useLoaderData();
+  //console.log('From [client/pages/Home.jsx]', {folders});
+  
   return (
     <>
       <Typography variant='h4' sx={{ mb: '20px' }}>
@@ -26,16 +31,7 @@ export default function Home() {
         <Grid item xs={3} sx={{
           height: '100%',
         }}>  
-          <FolderList folders={[ 
-            {
-              id: "1",
-              name: "Plan for Tet Holiday",
-            },
-            {
-              id: "2",
-              name: "Cooking",
-            },
-          ]} />
+          <FolderList folders={folders} />
         </Grid>
 
         <Grid item xs={9} sx={{
