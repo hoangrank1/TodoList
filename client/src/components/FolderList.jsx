@@ -5,12 +5,21 @@ import {
   List, 
   Typography, 
 } from '@mui/material'
-import React from 'react'
+import React, { 
+  useState, 
+} from 'react'
 import { 
   Link, 
+  useParams,
 } from 'react-router-dom'
 
 export default function FolderList({ folders }) {
+  const {
+    folderId
+  } = useParams();
+  console.log('From [client/components/FolderList]', {folderId});
+  const [activeFolderId, setActiveFolderId] = useState(folderId);
+
   return (
     <List 
       sx={{
@@ -39,9 +48,11 @@ export default function FolderList({ folders }) {
           style={{ 
             textDecoration: 'none', 
           }}
+          onClick={() => setActiveFolderId(id)}
         >
           <Card sx={{
             mb: '5px',
+            backgroundColor: id === activeFolderId ? 'rgb(255 211 140)' : null, 
           }}>
             <CardContent sx={{
               '&:last-child': { // Write over something
@@ -49,7 +60,10 @@ export default function FolderList({ folders }) {
               },
               padding: '10px',
             }}>
-              <Typography>
+              <Typography sx={{
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
                 {name}
               </Typography>
             </CardContent>

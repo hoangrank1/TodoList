@@ -6,10 +6,11 @@ import {
   List,
   Typography, 
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Link, 
-  Outlet, 
+  Outlet,
+  useParams, 
 } from 'react-router-dom';
 
 export default function NoteList() {
@@ -25,6 +26,12 @@ export default function NoteList() {
       }
     ]
   };
+
+  const {
+    noteId
+  } = useParams();
+  console.log('From [client/components/NoteList]', {noteId});
+  const [activeNoteId, setActiveNoteId] = useState(noteId);
 
   return (
     <Grid container height="100%">
@@ -51,11 +58,17 @@ export default function NoteList() {
         >
           {folder.notes.map(({id, content}) => {
             return (
-              <Link key={id} to={`note/${id}`} style={{ 
-                textDecoration: 'none'
-              }}>
+              <Link 
+                key={id} 
+                to={`note/${id}`} 
+                style={{ 
+                  textDecoration: 'none'
+                }}
+                onClick={() => setActiveNoteId(id)}
+              >
                 <Card sx={{
-                  mb: '5px'
+                  mb: '5px',
+                  backgroundColor: id === activeNoteId ? 'rgb(255 211 140)' : null,
                 }}>
                   <CardContent sx={{
                     '&:last-child': {
