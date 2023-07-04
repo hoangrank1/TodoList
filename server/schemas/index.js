@@ -24,6 +24,7 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
+    addNote(content: String!, folderId: ID!): Note,
     addFolder(name: String!): Folder,
     register(uid: String!, name: String!): Author,
   }

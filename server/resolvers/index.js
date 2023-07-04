@@ -1,4 +1,3 @@
-import fakeData from '../fakeData/index.js';
 import {
   FolderModel,
   AuthorModel,
@@ -18,14 +17,14 @@ export const resolvers = {
     },
     folder: async(parent, args) => { // args: data that request from client
       const folderId = args.folderId;
-      const foundFolder = await FolderModel.findOne({
-        _id: folderId,
-      });
+      console.log({ folderId });
+      const foundFolder = await FolderModel.findById(folderId);
       return foundFolder;
     },
-    note: (parent, args) => {
+    note: async (parent, args) => {
       const noteId = args.noteId;
-      return fakeData.notes.find(note => note.id === noteId); 
+      const note = await NoteModel.findById(noteId);
+      return note;
     },
   },
   Folder: {
@@ -37,12 +36,20 @@ export const resolvers = {
       });
       return author;
     },
-    notes: (parent, args) => {
+    notes: async (parent, args) => {
       //console.log('From [server/index/Folder-notes]', {parent, args});
-      return fakeData.notes.filter(note => note.folderId === parent.id);
+      const notes = await NoteModel.find({
+        folderId: parent.id,
+      });
+      return notes;
     }
   },
   Mutation: {
+    addNote: async (parent, args) => {
+      const newNote = new NoteModel(args);
+      await newNote.save();
+      return newNote;
+    },
     addFolder: async(parent, args, context) => {
       // create new folder by the data that client sent (args)
       const newFolder = new FolderModel({ ...args, authorId: context.uid });

@@ -39,3 +39,25 @@ export const noteLoader = async ({ params: { noteId } }) => {
   console.log('From [client/utils/noteLoader]', data);
   return data;
 }
+
+export const addNewNote = async ({ params, request}) => {
+  // the request contains the data that submitted which includes content, and folderId
+  const newNote = await request.formData();
+  const formDataObj = {};
+  newNote.forEach((value, key) => (formDataObj[key] = value));
+  
+  const query = `mutation Mutation($content: String!, $folderId: ID!) {
+    addNote(content: $content, folderId: $folderId) {
+      id
+      content
+    }
+  }`;
+
+  const { addNote } = await graphQLRequest({
+    query,
+    variables: formDataObj
+  })
+
+  console.log('From [client/utils/addNewNote]', { addNote });
+  return addNote;
+}

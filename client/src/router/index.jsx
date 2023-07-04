@@ -6,7 +6,7 @@ import AuthProvider from "../context/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import NoteList from "../components/NoteList";
 import Note from "../components/Note";
-import { noteLoader, notesLoader } from "../utils/noteUtils";
+import { addNewNote, noteLoader, notesLoader } from "../utils/noteUtils";
 import { foldersLoader } from "../utils/folderUtils";
 
 const AuthLayout = () => {
@@ -36,7 +36,8 @@ export default createBrowserRouter([
             children: [
               {
                 element: <NoteList />,
-                path: `folders/:folderId`,
+                path: `folders/:folderId`, // whenever submit to this url which are different from get, then the action will be executed.
+                action: addNewNote, // is used for changing, or updating the data
                 loader: notesLoader,
                 children: [
                   {
