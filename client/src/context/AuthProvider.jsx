@@ -9,12 +9,15 @@ import {
 import {
   useNavigate,
 } from 'react-router-dom';
+import {
+  CircularProgress
+} from '@mui/material';
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState({});
-
+  const [isLoading, setIsLoading] = useState(true);
   const auth = getAuth();
 
   const navigate = useNavigate();
@@ -24,7 +27,11 @@ export default function AuthProvider({ children }) {
       console.log('From [client/context/AuthProvider]', {user});
       if (user?.uid) {
         setUser(user);
-        localStorage.setItem('accessToken', user.accessToken);
+        if (user.accessToken !== localStorage.getItem('accessToken')) {
+          localStorage.setItem('accessToken', user.accessToken);
+          window.location.reload();
+        }
+        setIsLoading(false);
         return;
       }
 
@@ -41,7 +48,7 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{user, setUser}}>
-      {children}
+      {isLoading ? <CircularProgress /> : children}
     </AuthContext.Provider>
   );
 }

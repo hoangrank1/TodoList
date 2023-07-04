@@ -14,28 +14,46 @@ import {
   AuthContext, 
 } from '../context/AuthProvider';
 import { 
-  useNavigate, 
+  Navigate,
 } from 'react-router-dom';
+import { 
+  graphQLRequest, 
+} from '../utils/request';
 
 export default function Login() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate(); : issue: using hook useNavigate outside useEffect, when not using useEffect then should use compenet Navigate
   
-  const auth = new getAuth();
-  const { 
-    user, 
-  } = useContext(AuthContext);
+  const auth = getAuth();
+  const { user } = useContext(AuthContext);
 
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     
-    const res = await signInWithPopup(auth, provider);
+    const { 
+      user: { uid, displayName }
+    } = await signInWithPopup(auth, provider);
 
-    console.log('[From client/pages/Login]', { res });
-  }
+    const query = `mutation register($uid: String!, $name: String!) {
+      register(uid: $uid, name: $name) {
+        uid
+        name
+      }
+    }`;
+    
+    const { data } = await graphQLRequest({ 
+      query,
+      variables: {
+        uid: uid,
+        name: displayName,
+      }
+    });
 
-  if (user?.uid) {
-    navigate('/');
-    return
+    console.log('[From client/pages/Login]', { data });
+  }  
+
+  if (localStorage.getItem('accessToken')) {
+    // navigate('/');
+    return <Navigate to="/" />
   }
 
   return (
