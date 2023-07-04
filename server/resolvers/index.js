@@ -6,6 +6,11 @@ import {
 import {
   GraphQLScalarType
 } from 'graphql';
+import { 
+  PubSub 
+} from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
 
 export const resolvers = {
   Date: new GraphQLScalarType({
@@ -73,6 +78,11 @@ export const resolvers = {
       // create new folder by the data that client sent (args)
       const newFolder = new FolderModel({ ...args, authorId: context.uid });
       //console.log('[server/resolvers/addFolder]', { newFolder });
+      pubsub.publish('FOLDER_CREATED', {
+        folderCreated: {
+          message: 'A new folder created',
+        },
+      });
       await newFolder.save();
       return newFolder;
     },
@@ -86,6 +96,14 @@ export const resolvers = {
       }
       
       return foundUser;
+    }
+  },
+  Subscription: {
+    folderCreated: {
+      subscribe: () => pubsub.asyncIterator(['FOLDER_CREATED', 'NOTE_CREATED']),
+    },
+    notification: {
+      subscribe: () => pubsub.asyncIterator(['PUSH_NOTIFICATION'])
     }
   },
 };

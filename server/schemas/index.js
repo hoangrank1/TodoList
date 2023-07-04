@@ -1,6 +1,6 @@
 export const typeDefs = `#graphql
   scalar Date
-  
+
   type Folder {
     id: String!,
     name: String,
@@ -31,5 +31,14 @@ export const typeDefs = `#graphql
     updateNote(id: String!,content: String!): Note,
     addFolder(name: String!): Folder,
     register(uid: String!, name: String!): Author,
+  }
+
+  type Message {
+    message: String
+  }
+
+  type Subscription {
+    folderCreated: Message
+    notification: Message
   }
 `;
