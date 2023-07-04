@@ -1,4 +1,6 @@
-import { graphQLRequest } from "./request";
+import { 
+  graphQLRequest, 
+} from "./request";
 
 export const foldersLoader = async () => { // before Home is excuted the loader has been done
   const query = `query Folders {
@@ -13,3 +15,23 @@ export const foldersLoader = async () => { // before Home is excuted the loader 
   console.log('From [client/utils/foldersLoader]', data);
   return data;
 }
+
+export const addNewFolder = async (newFolder) => {
+  const query = `mutation Mutation($name: String!) {
+    addFolder(name: $name) {
+      name
+      author {
+        name
+      }
+    }
+  }`;
+
+  const data = await graphQLRequest({
+    query,
+    variables: { 
+      name: newFolder.name 
+    },
+  });
+
+  return data;
+};

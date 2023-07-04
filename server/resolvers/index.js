@@ -2,6 +2,7 @@ import fakeData from '../fakeData/index.js';
 import {
   FolderModel,
   AuthorModel,
+  NoteModel,
 } from '../models/index.js';
 
 export const resolvers = {
@@ -9,6 +10,8 @@ export const resolvers = {
     folders: async (parent, args, context) => { 
       const folders = await FolderModel.find({
         authorId: context.uid
+      }).sort({
+        updatedAt: 'desc',
       });
       console.log('From [server/resolvers/index/query-folders]', { folders, context });
       return folders;
@@ -26,10 +29,13 @@ export const resolvers = {
     },
   },
   Folder: {
-    author: (parent, args) => {
+    author: async (parent, args) => {
       //console.log('From [server/index/Folder-author]', {parent, args});
       const authorId = parent.authorId;
-      return fakeData.authors.find(author => author.id === authorId);
+      const author = await AuthorModel.findOne({
+        uid: authorId,
+      });
+      return author;
     },
     notes: (parent, args) => {
       //console.log('From [server/index/Folder-notes]', {parent, args});
@@ -37,9 +43,9 @@ export const resolvers = {
     }
   },
   Mutation: {
-    addFolder: async(parent, args) => {
+    addFolder: async(parent, args, context) => {
       // create new folder by the data that client sent (args)
-      const newFolder = new FolderModel({ ...args, authorId: '123' });
+      const newFolder = new FolderModel({ ...args, authorId: context.uid });
       console.log('[server/resolvers/addFolder]', { newFolder });
       await newFolder.save();
       return newFolder;
