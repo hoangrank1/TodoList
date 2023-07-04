@@ -12,6 +12,7 @@ import {
   Typography, 
 } from '@mui/material'
 import React, { 
+  useEffect,
   useState, 
 } from 'react'
 import { 
@@ -20,18 +21,32 @@ import {
   useParams, 
   useLoaderData,
   useSubmit,
+  useNavigate,
 } from 'react-router-dom';
 
 export default function NoteList() {
   const { folder } = useLoaderData();
-  console.log('From [client/components/NoteList-folder]', folder); 
+  //console.log('From [client/components/NoteList-folder]', folder); 
 
   const {
     noteId,
     folderId,
   } = useParams();
-  console.log('From [client/components/NoteList-noteId]', {noteId});
+  console.log('From [client/components/NoteList-noteId]', { noteId });
+  
+  const navigate = useNavigate();
   const [activeNoteId, setActiveNoteId] = useState(noteId);
+  useEffect(() => {
+    if (noteId) {
+      setActiveNoteId(noteId);
+      return;
+    }
+
+    if (folder?.notes?.[0]) {
+      navigate(`note/${folder.notes[0].id}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [noteId, folder.notes]);
 
   const submit = new useSubmit();
   const handleAddNewNote = () => {
