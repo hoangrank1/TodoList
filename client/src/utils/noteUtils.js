@@ -61,3 +61,25 @@ export const addNewNote = async ({ params, request}) => {
   console.log('From [client/utils/addNewNote]', { addNote });
   return addNote;
 }
+
+export const updateNote = async ({ params, request}) => {
+  const updatedNote = await request.formData();
+  const formDataObj = {};
+  updatedNote.forEach((value, key) => (formDataObj[key] = value));
+  
+  const query = `mutation Mutation($id: String!, $content: String!) {
+    updateNote(id: $id, content: $content) {
+      id
+      content
+    }
+  }`;
+
+  const { updateNote } = await graphQLRequest({
+    query,
+    variables: formDataObj
+  })
+
+  console.log('From [client/utils/updateNote]', {updateNote})
+
+  return updateNote;
+}

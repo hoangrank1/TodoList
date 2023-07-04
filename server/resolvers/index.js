@@ -12,12 +12,12 @@ export const resolvers = {
       }).sort({
         updatedAt: 'desc',
       });
-      console.log('From [server/resolvers/index/query-folders]', { folders, context });
+      //console.log('From [server/resolvers/index/query-folders]', { folders, context });
       return folders;
     },
     folder: async(parent, args) => { // args: data that request from client
       const folderId = args.folderId;
-      console.log({ folderId });
+      //console.log({ folderId });
       const foundFolder = await FolderModel.findById(folderId);
       return foundFolder;
     },
@@ -49,11 +49,16 @@ export const resolvers = {
       const newNote = new NoteModel(args);
       await newNote.save();
       return newNote;
+    }, 
+    updateNote: async (parent, args) => {
+      const noteId = args.id;
+      const note = await NoteModel.findByIdAndUpdate(noteId, args);
+      return note;
     },
     addFolder: async(parent, args, context) => {
       // create new folder by the data that client sent (args)
       const newFolder = new FolderModel({ ...args, authorId: context.uid });
-      console.log('[server/resolvers/addFolder]', { newFolder });
+      //console.log('[server/resolvers/addFolder]', { newFolder });
       await newFolder.save();
       return newFolder;
     },

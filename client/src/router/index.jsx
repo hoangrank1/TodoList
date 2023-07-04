@@ -6,7 +6,7 @@ import AuthProvider from "../context/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import NoteList from "../components/NoteList";
 import Note from "../components/Note";
-import { addNewNote, noteLoader, notesLoader } from "../utils/noteUtils";
+import { addNewNote, noteLoader, notesLoader, updateNote } from "../utils/noteUtils";
 import { foldersLoader } from "../utils/folderUtils";
 
 const AuthLayout = () => {
@@ -43,6 +43,7 @@ export default createBrowserRouter([
                   {
                     element: <Note />,
                     path: `note/:noteId`,
+                    action: updateNote,
                     loader: noteLoader,
                   }                
                 ]
