@@ -40,6 +40,8 @@ export const resolvers = {
       //console.log('From [server/index/Folder-notes]', {parent, args});
       const notes = await NoteModel.find({
         folderId: parent.id,
+      }).sort({
+        updatedAt: 'desc',
       });
       return notes;
     }
