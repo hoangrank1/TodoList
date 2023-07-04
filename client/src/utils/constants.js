@@ -1,2 +1,2 @@
-export const GRAPHQL_SERVER = 'http://localhost:3001';
-export const GRAPHQL_SUBSCRIPTION_ENDPOINT = 'ws://localhost:3001';
+export const GRAPHQL_SERVER = 'https://todolist-server-tnfh.onrender.com';
+export const GRAPHQL_SUBSCRIPTION_ENDPOINT = 'wss://https://todolist-server-tnfh.onrender.com';
