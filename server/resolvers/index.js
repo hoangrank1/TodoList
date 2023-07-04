@@ -2,6 +2,7 @@ import {
   FolderModel,
   AuthorModel,
   NoteModel,
+  NotificationModel,
 } from '../models/index.js';
 import {
   GraphQLScalarType
@@ -96,6 +97,18 @@ export const resolvers = {
       }
       
       return foundUser;
+    },
+    pushNotification: async (parent, args) => {
+      const newNotification = new NotificationModel(args);
+
+      pubsub.publish('PUSH_NOTIFICATION', {
+        notification: {
+          message: args.content,
+        },
+      });
+
+      await newNotification.save();
+      return { message: 'SUCCESS'}
     }
   },
   Subscription: {
