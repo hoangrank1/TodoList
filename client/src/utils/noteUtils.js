@@ -18,7 +18,7 @@ export const notesLoader = async ({ params: { folderId } }) => {
       folderId,
     },
   });
-  console.log('From [client/utils/notesLoader]', data);
+  //console.log('From [client/utils/notesLoader]', data);
   return data; 
 }
 
@@ -36,7 +36,7 @@ export const noteLoader = async ({ params: { noteId } }) => {
       noteId,
     },
   });
-  console.log('From [client/utils/noteLoader]', data);
+  //console.log('From [client/utils/noteLoader]', data);
   return data;
 }
 
@@ -58,7 +58,7 @@ export const addNewNote = async ({ params, request}) => {
     variables: formDataObj
   })
 
-  console.log('From [client/utils/addNewNote]', { addNote });
+  //console.log('From [client/utils/addNewNote]', { addNote });
   return addNote;
 }
 
@@ -79,7 +79,6 @@ export const updateNote = async ({ params, request}) => {
     variables: formDataObj
   })
 
-  console.log('From [client/utils/updateNote]', {updateNote})
-
+  //console.log('From [client/utils/updateNote]', {updateNote})
   return updateNote;
 }

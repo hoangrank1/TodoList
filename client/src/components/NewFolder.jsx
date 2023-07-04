@@ -54,7 +54,7 @@ export default function NewFolder() {
   };
 
   useEffect(() => {
-    console.log({popupName})
+    //console.log({popupName})
     if (popupName === 'add-folder') {
       setOpen(true);
       return;

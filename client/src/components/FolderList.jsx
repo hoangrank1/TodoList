@@ -18,7 +18,7 @@ export default function FolderList({ folders }) {
   const {
     folderId
   } = useParams();
-  console.log('From [client/components/FolderList]', {folderId});
+  //console.log('From [client/components/FolderList]', {folderId});
   const [activeFolderId, setActiveFolderId] = useState(folderId);
 
   return (

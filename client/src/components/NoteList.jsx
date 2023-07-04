@@ -32,7 +32,7 @@ export default function NoteList() {
     noteId,
     folderId,
   } = useParams();
-  console.log('From [client/components/NoteList-noteId]', { noteId });
+  //console.log('From [client/components/NoteList-noteId]', { noteId });
   
   const navigate = useNavigate();
   const [activeNoteId, setActiveNoteId] = useState(noteId);

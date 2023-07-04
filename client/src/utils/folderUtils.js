@@ -12,7 +12,7 @@ export const foldersLoader = async () => { // before Home is excuted the loader 
   }`;
 
   const data = await graphQLRequest({ query });
-  console.log('From [client/utils/foldersLoader]', data);
+  //console.log('From [client/utils/foldersLoader]', data);
   return data;
 }
 
@@ -32,6 +32,6 @@ export const addNewFolder = async (newFolder) => {
       name: newFolder.name 
     },
   });
-
+  //console.log('From [client/utils/addNewFolder]', data);
   return data;
 };

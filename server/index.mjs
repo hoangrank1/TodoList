@@ -32,14 +32,14 @@ const server = new ApolloServer({
 await server.start();
 
 const authorizationJWT = async(req, res, next) => {
-  console.log('[server/authorization]', { authorization: req.headers.authorization });
+  //console.log('[server/authorization]', { authorization: req.headers.authorization });
   
   const authorizationHeader = req.headers.authorization;
   if (authorizationHeader) {
     const accessToken = authorizationHeader.split(' ')[1];
     getAuth().verifyIdToken(accessToken)
       .then(decodedToken => {
-        console.log(decodedToken);
+        //console.log(decodedToken);
         res.locals.uid = decodedToken.uid; // store uid in res.locals so that the in the context can retrieve uid
         next();
       })
